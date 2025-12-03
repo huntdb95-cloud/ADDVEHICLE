@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Add Vehicle to Insurance Policy</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; background-color: #f0f4f8; }
+    header { background-color: #004080; padding: 20px; text-align: center; }
+    header img { max-height: 80px; }
+    h2 { color: #004080; text-align: center; margin-top: 20px; }
+    .toolbar { max-width: 600px; margin: 10px auto 0; padding: 0 20px; }
+    #translateBtn {
+      background: #e0a800; color: #000; border: none; border-radius: 4px;
+      padding: 10px 14px; cursor: pointer;
+    }
+    #translateBtn:hover { background: #c48800; }
+    form {
+      max-width: 600px; margin: 20px auto; padding: 20px;
+      border: 1px solid #ccc; border-radius: 8px; background: #ffffff;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    label { display: block; margin-top: 12px; font-weight: bold; color: #333; }
+    input, select {
+      width: 100%; padding: 8px; margin-top: 6px; border: 1px solid #ccc; border-radius: 4px;
+    }
+    .checkbox-group { margin-top: 10px; }
+    .checkbox-group label { font-weight: normal; display: block; margin: 6px 0; }
+    #lienholderField { display: none; margin-top: 10px; }
+    button[type="submit"] {
+      margin-top: 20px; padding: 12px 20px; background: #004080; color: white;
+      border: none; border-radius: 4px; cursor: pointer; font-size: 16px;
+    }
+    button[type="submit"]:hover { background: #0066cc; }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="your-logo.png" alt="Company Logo">
+  </header>
+
+  <h2 data-i18n="formTitle">Add Vehicle to Insurance Policy</h2>
+
+  <div class="toolbar">
+    <button type="button" id="translateBtn" data-i18n="translateBtn">Translate to Spanish</button>
+  </div>
+
+  <form action="https://formspree.io/f/yourFormID" method="POST">
+    <!-- Customer Info -->
+    <label for="name"><span data-i18n="labelName">Customer Name</span></label>
+    <input type="text" id="name" name="customer_name" required>
+
+    <label for="phone"><span data-i18n="labelPhone">Phone Number</span></label>
+    <input type="tel" id="phone" name="phone_number" required>
+
+    <label for="email"><span data-i18n="labelEmail">Email Address</span></label>
+    <input type="email" id="email" name="email_address" required>
+
+    <!-- Vehicle Details -->
+    <label for="year"><span data-i18n="labelYear">Vehicle Year</span></label>
+    <input type="number" id="year" name="vehicle_year" min="1900" max="2099" required>
+
+    <label for="make"><span data-i18n="labelMake">Vehicle Make</span></label>
+    <input type="text" id="make" name="vehicle_make" required>
+
+    <label for="model"><span data-i18n="labelModel">Vehicle Model</span></label>
+    <input type="text" id="model" name="vehicle_model" required>
+
+    <label for="vin"><span data-i18n="labelVin">VIN</span></label>
+    <input type="text" id="vin" name="vehicle_vin" maxlength="17" required>
+
+    <label for="type"><span data-i18n="labelType">Vehicle Type</span></label>
+    <select id="type" name="vehicle_type" required>
+      <option value="" data-i18n="optSelect">-- Select --</option>
+      <option value="sedan">Sedan</option>
+      <option value="suv">SUV</option>
+      <option value="truck">Truck</option>
+      <option value="van">Van</option>
+      <option value="motorcycle">Motorcycle</option>
+      <option value="other">Other</option>
+    </select>
+
+    <!-- Deductibles -->
+    <label for="compDeductible"><span data-i18n="labelComp">Comprehensive Deductible</span></label>
+    <select id="compDeductible" name="comprehensive_deductible" required>
+      <option value="" data-i18n="optSelect">-- Select --</option>
+      <option value="50">$50</option>
+      <option value="100">$100</option>
+      <option value="250">$250</option>
+      <option value="500">$500</option>
+      <option value="1000">$1,000</option>
+      <option value="2500">$2,500</option>
+    </select>
+
+    <label for="collisionDeductible"><span data-i18n="labelCollision">Collision Deductible</span></label>
+    <select id="collisionDeductible" name="collision_deductible" required>
+      <option value="" data-i18n="optSelect">-- Select --</option>
+      <option value="50">$50</option>
+      <option value="100">$100</option>
+      <option value="250">$250</option>
+      <option value="500">$500</option>
+      <option value="1000">$1,000</option>
+      <option value="2500">$2,500</option>
+    </select>
+
+    <!-- Optional Coverages -->
+    <div class="checkbox-group">
+      <label><input type="checkbox" name="full_glass"> <span data-i18n="labelGlass">Full Glass Coverage</span></label>
+      <label><input type="checkbox" name="rental_reimbursement"> <span data-i18n="labelRental">Rental Reimbursement</span></label>
+      <label><input type="checkbox" name="roadside_assistance"> <span data-i18n="labelRoadside">Roadside Assistance</span></label>
+      <label><input type="checkbox" id="lienholderCheckbox" name="lienholder"> <span data-i18n="labelLien">Lienholder</span></label>
+    </div>
+
+    <!-- Lienholder Name -->
+    <div id="lienholderField">
+      <label for="lienholderName"><span data-i18n="labelLienName">Lienholder Name</span></label>
+      <input type="text" id="lienholderName" name="lienholder_name">
+    </div>
+
+    <!-- Submit -->
+    <button type="submit" id="submitBtn" data-i18n="submitBtn">Submit Request</button>
+  </form>
+
+  <script>
+    // Lienholder toggle
+    const lienholderCheckbox = document.getElementById('lienholderCheckbox');
+    const lienholderField = document.getElementById('lienholderField');
+    const lienholderNameInput = document.getElementById('lienholderName');
+    lienholderCheckbox.addEventListener('change', function() {
+      const show = this.checked;
+      lienholderField.style.display = show ? 'block' : 'none';
+      lienholderNameInput.required = show;
+    });
+
+    // Translation dictionaries
+    const english = {
+      formTitle: "Add Vehicle to Insurance Policy",
+      translateBtn: "Translate to Spanish",
+      labelName: "Customer Name",
+      labelPhone: "Phone Number",
+      labelEmail: "Email Address",
+      labelYear: "Vehicle Year",
+      labelMake: "Vehicle Make",
+      labelModel: "Vehicle Model",
+      labelVin: "VIN",
+      labelType: "Vehicle Type",
+      optSelect: "-- Select --",
+      labelComp: "Comprehensive Deductible",
+      labelCollision: "Collision Deductible",
+      labelGlass: "Full Glass Coverage",
+      labelRental: "Rental Reimbursement",
+      labelRoadside: "Roadside Assistance",
+      labelLien: "Lienholder",
+      labelLienName: "Lienholder Name",
+      submitBtn: "Submit Request"
+    };
+
+    const spanish = {
+      formTitle: "Agregar Vehículo a la Póliza de Seguro",
+      translateBtn: "Traducir al Inglés",
+      labelName: "Nombre del Cliente",
+      labelPhone: "Número de Teléfono",
+      labelEmail: "Correo Electrónico",
+      labelYear: "Año del Vehículo",
+      labelMake: "Marca del Vehículo",
+      labelModel: "Modelo del Vehículo",
+      labelVin: "VIN",
+      labelType: "Tipo de Vehículo",
+      optSelect: "-- Seleccionar --",
+      labelComp: "Deducible de Cobertura Integral",
+      labelCollision: "Deducible de Colisión",
+      labelGlass: "Cobertura de Vidrio Completo",
+      labelRental: "Reembolso de Alquiler",
+      labelRoadside: "Asistencia en Carretera",
+      labelLien: "Acreedor Prendario",
+      labelLienName: "Nombre del Acreedor Prendario",
+      submitBtn: "Enviar Solicitud"
+    };
+
+    let isSpanish = false;
+
+    function applyTranslations(dict) {
+      // Update all elements that have a data-i18n key
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        const text = dict[key];
+        if (typeof text === 'string') {
+          el.textContent = text;
+        }
+      });
+    }
+
+    document.getElementById('translateBtn').addEventListener('click', function() {
+      isSpanish = !isSpanish;
+      applyTranslations(isSpanish ? spanish : english);
+    });
+  </script>
+</body>
+</html>
